@@ -1,7 +1,7 @@
 import base64
 import random # Avoid * imports as they add a lot of unkwnown namespaces to your file
 import json
-from flask import Flask, Response, request, render_template, jsonify
+from flask import Flask, Response, request, render_template, jsonify, current_app
 from flask_cors import cross_origin
 
 app = Flask(__name__,
@@ -21,8 +21,8 @@ def random_number():
 def upload_me():
     if request.method == 'GET':
         """ Show saved image """
-        with open('file.img', 'r') as rf:
-            data = rf.read()
+        if current_app.file:
+            data = current_app.file
             mimetype, image_string = data.split(';base64,')
             image_bytes = image_string.encode('utf-8')
             return Response(base64.decodebytes(image_bytes), mimetype=mimetype)
@@ -31,12 +31,9 @@ def upload_me():
         """ Receive base 64 encoded image """
         request_data = json.loads(request.get_data())
         data = request_data['data'][5:]
-
-        with open('file.img', 'w') as wf:
-            wf.write(data)
-
+        current_app.file = data
         return Response(status=200)
-       
+
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')

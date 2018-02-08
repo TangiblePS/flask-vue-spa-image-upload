@@ -32,7 +32,7 @@ def upload_me():
         """ Receive base 64 encoded image """
         start = perf_counter()
         print('Request received')
-        request_data = json.loads(request.get_data())
+        request_data = json.loads(request.get_data().decode('utf-8'))
         data = request_data['data'][5:]
         current_app.file = data
         print('Saved in memory.')

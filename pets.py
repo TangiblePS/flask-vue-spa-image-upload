@@ -57,6 +57,9 @@ vgg = Vgg16()
 
 # batches = vgg.get_batches(path+'train', batch_size=2)
 # batches = vgg.get_batches(path+'onepic', batch_size=1)
+
+# probably need something here to check the file type in the path location and fix it.
+
 batches = vgg.get_batches(path, batch_size=1)
 imgs,labels = next(batches)
 

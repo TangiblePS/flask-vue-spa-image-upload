@@ -23,8 +23,8 @@ def random_number():
 def upload_me():
     if request.method == 'GET':
         """ Show saved image """
-        if os.path.exists('file.img'):
-            with open('file.img', 'r') as rf:
+        if os.path.exists('webdata/file.img'):
+            with open('webdata/file.img', 'r') as rf:
                 data = rf.read()
                 mimetype, image_string = data.split(';base64,')
                 image_bytes = image_string.encode('utf-8')
@@ -37,7 +37,7 @@ def upload_me():
         request_data = json.loads(request.get_data().decode('utf-8'))
         data = request_data['data'][5:]
 
-        with open('file.img', 'w') as wf:
+        with open('webdata/file.img', 'w') as wf:
             wf.write(data)
             
         print('Saved in file.')
@@ -51,8 +51,8 @@ def upload_me():
 def upload_me2():
     if request.method == 'GET':
         """ Show saved image """
-        if os.path.exists('file.img'):
-            with open('file.img', 'r') as rf:
+        if os.path.exists('webdata/file.img'):
+            with open('webdata/file.img', 'r') as rf:
                 data = rf.read()
                 mimetype, image_string = data.split(';base64,')
                 image_bytes = image_string.encode('utf-8')
@@ -65,7 +65,7 @@ def upload_me2():
         request_data = json.loads(request.get_data().decode('utf-8'))
         data = request_data['data'][5:]
 
-        with open('file.img', 'w') as wf:
+        with open('webdata/file.img', 'w') as wf:
             wf.write(data)
             
         print('Saved in file.')

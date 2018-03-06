@@ -46,6 +46,34 @@ def upload_me():
 
     return render_template('index.html')
 
+@app.route('/api/name', methods=['GET','POST'])
+@cross_origin(allow_headers=['Content-Type'])
+def upload_me2():
+    if request.method == 'GET':
+        """ Show saved image """
+        if os.path.exists('file.img'):
+            with open('file.img', 'r') as rf:
+                data = rf.read()
+                mimetype, image_string = data.split(';base64,')
+                image_bytes = image_string.encode('utf-8')
+                return Response(base64.decodebytes(image_bytes), mimetype=mimetype)
+
+    if request.method == 'POST':
+        """ Receive base 64 encoded image """
+        start = perf_counter()
+        print('Request received')
+        request_data = json.loads(request.get_data().decode('utf-8'))
+        data = request_data['data'][5:]
+
+        with open('file.img', 'w') as wf:
+            wf.write(data)
+            
+        print('Saved in file.')
+        print('Time elapsed: {}'.format(perf_counter() - start))
+        return Response(status=200)
+
+    return render_template('index.html')
+
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')

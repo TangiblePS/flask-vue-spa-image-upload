@@ -29,6 +29,8 @@ def upload_me():
                 mimetype, image_string = data.split(';base64,')
                 image_bytes = image_string.encode('utf-8')
                 return Response(base64.decodebytes(image_bytes), mimetype=mimetype)
+# not including mimetype results in gibberish being shown.
+#                return Response(base64.decodebytes(image_bytes))
 
     if request.method == 'POST':
         """ Receive base 64 encoded image """
@@ -39,6 +41,15 @@ def upload_me():
 
         with open('webdata/file.img', 'w') as wf:
             wf.write(data)
+
+# tried the following code, but it resulted in a 0-byte file being written.
+        mimetype, image_string = data.split(';base64,')
+        image_bytes = image_string.encode('utf-8')
+
+#        with open('webdata/file.jpg', 'w') as wf:
+#            wf.write(base64.decodebytes(image_bytes), mimetype)
+        # seems like mimetype is not stored anywhere;
+        # probably it should dictate the file name.        
             
         print('Saved in file.')
         print('Time elapsed: {}'.format(perf_counter() - start))

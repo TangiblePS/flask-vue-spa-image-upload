@@ -30,14 +30,14 @@
         const path = 'http://localhost:5000/api/upload'
 
         axios.post(path, {'name': name, 'data': data})
-        console.log('tried code in sendUploadToBackend')
+        console.log('ran sendUploadToBackend')
       },
 
       onChange(image) {
         console.log('New picture selected!')
         if (this.$refs.pictureInput.image) {
           console.log('Picture is loaded.')
-          this.sendUploadToBackend(this.$refs.pictureInput.file.name, this.$refs.pictureInput.image)
+          this.sendUploadToBackend(this.$refs.pictureInput.file.name, this.$refs.pictureInput.image) 
         } else {
           console.log('FileReader API not supported: use the <form>, Luke!')
         }

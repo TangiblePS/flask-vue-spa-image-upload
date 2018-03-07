@@ -30,7 +30,7 @@
         const path = 'http://localhost:5000/api/upload'
 
         axios.post(path, {'name': name, 'data': data})
-        console.log('ran sendUploadToBackend')
+        console.log('got data from api/upload')
       },
 
       onChange(image) {

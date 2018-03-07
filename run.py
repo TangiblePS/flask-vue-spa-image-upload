@@ -46,8 +46,8 @@ def upload_me():
         mimetype, image_string = data.split(';base64,')
         image_bytes = image_string.encode('utf-8')
 
-#        with open('webdata/file.jpg', 'w') as wf:
-#            wf.write(base64.decodebytes(image_bytes), mimetype)
+        with open('webdata/dir/file.jpg', 'wb') as wf:
+            wf.write(base64.b64decode(image_bytes))
         # seems like mimetype is not stored anywhere;
         # probably it should dictate the file name.        
             

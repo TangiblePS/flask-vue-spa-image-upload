@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style>
-#app, #upload {
+#app, #upload, #pets {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

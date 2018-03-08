@@ -10,7 +10,7 @@
       }">
     </picture-input>
 
-    <button @click="getName">Identify pet</button>
+    <button @click="getName">Identify pet</button><br>
     Pet name: {{ petName }} 
   </div>
 </template>
@@ -24,6 +24,7 @@
     name: 'app',
     data() {
       return {
+	  petName: ""
       }
     },
     components: {
@@ -39,14 +40,14 @@
 
      getName () {
       // this.randomNumber = this.getRandomInt(1, 100)
-       this.petName = this.getNameFromBackend()
+       this.petName = this.getPetNameFromBackend()
      },
-     getNameFromBackend () {
-       const path = `http://localhost:5000/api/random`
+     getPetNameFromBackend () {
+       const path = `http://localhost:5000/api/name`
        axios.get(path)
        .then(response => {
 //        this.petName = response.data.petName // need to put that in JSON probably.
-          this.petName = response.data.randomNumber
+          this.petName = response.data.petName
        })
        .catch(error => {
          console.log(error)
@@ -63,7 +64,7 @@
      }
     },
   created () {
-    this.getName()
+    this.getPetName()
   }
 }
 

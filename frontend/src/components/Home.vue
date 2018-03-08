@@ -39,7 +39,6 @@ export default {
   },
   created () {
     this.getRandom()
-    this.randomNumber1 = this.getRandomInt(1, 100)
   }
 }
 </script>

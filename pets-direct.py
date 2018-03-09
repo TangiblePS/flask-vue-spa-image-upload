@@ -12,8 +12,6 @@ import sys
 # Import our class, and instantiate
 from vgg16 import Vgg16
 
-path = sys.argv[1]
-
 def pet_id(imgs):
 
   #all_preds = vgg.model.predict(imgs)
@@ -54,13 +52,19 @@ vgg = Vgg16()
 
 # could have a line here saying if path is null then
 # path='./pets-data/'
+if len(sys.argv) > 1:
+  path = sys.argv[1]
+else:
+  path = 'pets-data/'
 
 # batches = vgg.get_batches(path+'train', batch_size=2)
 # batches = vgg.get_batches(path+'onepic', batch_size=1)
 
 # probably need something here to check the file type in the path location and fix it.
+try:
+  batches = vgg.get_batches(path, batch_size=1)
+  imgs,labels = next(batches)
 
-batches = vgg.get_batches(path, batch_size=1)
-imgs,labels = next(batches)
-
-pet_id(imgs)
+  pet_id(imgs)
+except FileNotFoundError as e:
+  print("I don't see a pet here")

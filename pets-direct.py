@@ -45,7 +45,7 @@ def pet_id(imgs):
       if (Ba>Mi):
         naive_guesses.append("Baron")
       else: naive_guesses.append("Mildred")
-    
+
   print (naive_guesses[0])
 
 vgg = Vgg16()
@@ -64,7 +64,7 @@ else:
 try:
   batches = vgg.get_batches(path, batch_size=1)
   imgs,labels = next(batches)
-
   pet_id(imgs)
-except FileNotFoundError as e:
+except (FileNotFoundError, ZeroDivisionError) as e:
+  # ZeroDivisionError is called when the path location is empty
   print("I don't see a pet here")

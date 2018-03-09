@@ -62,9 +62,11 @@ def find_and_show_a_name():
     if request.method == 'GET':
         """ Show name of a saved image """
         if os.path.exists('webdata/dir/file.jpg'):
-            python2_command = "python pets-direct.py webdata"
+            python2_command = "python pets-direct.py"
             process = subprocess.Popen(python2_command.split(), stdout=subprocess.PIPE)
             output, error = process.communicate()
+            if output.decode('ascii').startswith('I don'):
+                return jsonify({'error': output.decode('ascii').strip()})
             # ok now I need to get what's between the '' in a REGEXP
             petName = re.search('(?<=\\n)\w+',output.decode('ascii')).group(0)
 #            petName = output.decode('ascii')

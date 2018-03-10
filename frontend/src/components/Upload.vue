@@ -11,7 +11,7 @@
     </picture-input>
 
     <button @click="getName">Identify pet</button><br>
-    Pet name: {{ petName }} 
+    Pet name: {{ petName }}{{ progress }}
   </div>
 </template>
 
@@ -24,7 +24,8 @@
     name: 'app',
     data() {
       return {
-	  petName: ""
+        petName: "",
+        progress: ""
       }
     },
     components: {
@@ -33,7 +34,6 @@
     methods: {
       sendUploadToBackend(name, data) {
         const path = 'http://localhost:5000/api/upload'
-
         axios.post(path, {'name': name, 'data': data})
         console.log('got data from api/upload')
       },
@@ -43,14 +43,19 @@
       this.petName = this.getPetNameFromBackend()
     },
     getPetNameFromBackend () {
+      var progressRun = setInterval(() => {this.progress += '.'}, 500)
       const path = `http://localhost:5000/api/name`
       axios.get(path)
       .then(response => {
 //        this.petName = response.data.petName // need to put that in JSON probably.
-          this.petName = response.data
+          this.petName = response.data.petName
+          clearInterval(progressRun)
+          this.progress = ''
       })
       .catch(error => {
         console.log(error)
+        clearInterval(progressRun)
+        this.progress = ''
       })
     },
     onChange(image) {
@@ -59,15 +64,18 @@
       if (this.$refs.pictureInput.image) {
         console.log('Picture is loaded.')
         this.sendUploadToBackend(this.$refs.pictureInput.file.name, this.$refs.pictureInput.image) 
+        this.getPetNameFromBackend()
       } else {
         console.log('FileReader API not supported: use the <form>, Luke!')
       }
     },
     onRemove() {
+      this.petName = ''
+
       var path = `http://localhost:5000/api/remove`
       axios.delete(path)
       .then(response => {
-        console.log(response.data)
+        console.log(response.data.message)
       })
       .catch(error => {
         console.log(error.data)
@@ -75,7 +83,7 @@
     }
     },
   created () {
-    this.getName()
+    // this.getName()
   }
 }
 

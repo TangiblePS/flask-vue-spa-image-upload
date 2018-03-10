@@ -67,4 +67,4 @@ try:
   pet_id(imgs)
 except (FileNotFoundError, ZeroDivisionError) as e:
   # ZeroDivisionError is called when the path location is empty
-  print("I don't see a pet here")
+  print("Result: I don't see a pet here")

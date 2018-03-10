@@ -61,17 +61,26 @@ def upload_me():
 def find_and_show_a_name():
     if request.method == 'GET':
         """ Show name of a saved image """
-        if os.path.exists('webdata/dir/file.jpg'):
-            python2_command = "python pets-direct.py"
-            process = subprocess.Popen(python2_command.split(), stdout=subprocess.PIPE)
-            output, error = process.communicate()
-            if output.decode('ascii').startswith('I don'):
-                return jsonify({'error': output.decode('ascii').strip()})
-            # ok now I need to get what's between the '' in a REGEXP
-            petName = re.search('(?<=\\n)\w+',output.decode('ascii')).group(0)
+        python2_command = "python pets-direct.py webdata"
+        process = subprocess.Popen(python2_command.split(), stdout=subprocess.PIPE)
+        output, error = process.communicate()
+        return jsonify(output.decode('ascii'))
+        if output.decode('ascii').startswith('I don'):
+            return jsonify({'petName': output.decode('ascii')})
+        # ok now I need to get what's between the '' in a REGEXP
+        petName = re.search('(?<=\\n)\w+',output.decode('ascii')).group(0)
 #            petName = output.decode('ascii')
-            response = {'petName': petName}
-            return jsonify(response)
+        response = {'petName': petName}
+        return jsonify(response)
+
+
+@app.route('/api/remove', methods=['DELETE'])
+@cross_origin(allow_headers=['Content-Type'])
+def remove_image():
+    if os.path.exists('webdata/dir/file.jpg'):
+        os.remove('webdata/dir/file.jpg')
+        return jsonify({'message': 'Picture deleted'})
+    return jsonify({'message': 'Picture not found'})
 
 
 @app.route('/', defaults={'path': ''})

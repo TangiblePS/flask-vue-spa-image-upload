@@ -3,7 +3,7 @@
   <div>
     <p>Upload</p>
 
-    <picture-input ref="pictureInput" @change="onChange" width="200" height="200" margin="8" accept="image/jpeg,image/png" size="10"
+    <picture-input ref="pictureInput" @change="onChange" @remove="onRemove" width="200" height="200" margin="8" accept="image/jpeg,image/png" size="10"
       :removable="true" :customStrings="{
         upload: '<h1>Bummer!</h1>',
         drag: 'Drag a GIF'
@@ -38,33 +38,44 @@
         console.log('got data from api/upload')
       },
 
-     getName () {
+    getName () {
       // this.randomNumber = this.getRandomInt(1, 100)
-       this.petName = this.getPetNameFromBackend()
-     },
-     getPetNameFromBackend () {
-       const path = `http://localhost:5000/api/name`
-       axios.get(path)
-       .then(response => {
+      this.petName = this.getPetNameFromBackend()
+    },
+    getPetNameFromBackend () {
+      const path = `http://localhost:5000/api/name`
+      axios.get(path)
+      .then(response => {
 //        this.petName = response.data.petName // need to put that in JSON probably.
-          this.petName = response.data.petName
-       })
-       .catch(error => {
-         console.log(error)
-       })
-     },
-     onChange(image) {
-       console.log('New picture selected!')
-       if (this.$refs.pictureInput.image) {
-         console.log('Picture is loaded.')
-         this.sendUploadToBackend(this.$refs.pictureInput.file.name, this.$refs.pictureInput.image) 
-       } else {
-         console.log('FileReader API not supported: use the <form>, Luke!')
-       }
-     }
+          this.petName = response.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    onChange(image) {
+      console.log('New picture selected!')
+      this.petName = ''
+      if (this.$refs.pictureInput.image) {
+        console.log('Picture is loaded.')
+        this.sendUploadToBackend(this.$refs.pictureInput.file.name, this.$refs.pictureInput.image) 
+      } else {
+        console.log('FileReader API not supported: use the <form>, Luke!')
+      }
+    },
+    onRemove() {
+      var path = `http://localhost:5000/api/remove`
+      axios.delete(path)
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(error => {
+        console.log(error.data)
+      })
+    }
     },
   created () {
-    this.getPetName()
+    this.getName()
   }
 }
 

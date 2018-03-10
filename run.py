@@ -64,13 +64,10 @@ def find_and_show_a_name():
         python2_command = "python pets-direct.py webdata"
         process = subprocess.Popen(python2_command.split(), stdout=subprocess.PIPE)
         output, error = process.communicate()
-        return jsonify(output.decode('ascii'))
-        if output.decode('ascii').startswith('I don'):
-            return jsonify({'petName': output.decode('ascii')})
         # ok now I need to get what's between the '' in a REGEXP
-        petName = re.search('(?<=\\n)\w+',output.decode('ascii')).group(0)
+        petName = re.search(r'(?:Result:)(.*)', output.decode('ascii')).group(1)
 #            petName = output.decode('ascii')
-        response = {'petName': petName}
+        response = {'petName': petName.strip()}
         return jsonify(response)
 
 

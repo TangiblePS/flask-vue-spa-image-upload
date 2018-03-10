@@ -16,7 +16,7 @@ def pet_id(imgs):
 
   #all_preds = vgg.model.predict(imgs)
   all_preds=vgg.model.predict(imgs)
-  
+
   Beaker_like=[253,225,173,211,193,151,273]
   Baron_like=range(236,240)
   Mildred_like=range(281,289)
@@ -46,7 +46,7 @@ def pet_id(imgs):
         naive_guesses.append("Baron")
       else: naive_guesses.append("Mildred")
 
-  print (naive_guesses[0])
+  print("Result:",naive_guesses[0])
 
 vgg = Vgg16()
 
